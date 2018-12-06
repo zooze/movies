@@ -1,0 +1,32 @@
+body {
+  font-family: Hevletica, Arial, sans-serif;
+  color: #111144;
+}
+
+.nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.nav ul li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.movie {
+  background-color: #dddddd;
+  padding: 10px;
+}
+
+.movie h2 {
+  margin-top: 0;
+  margin-bottom: 6px;
+}
+
+.movie .genre {
+  display: block;
+}
+
+a, a:visited {
+  color: blue;
+}
