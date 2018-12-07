@@ -3,41 +3,14 @@ const fs = require('fs');
 require.extensions['.css'] = function (module, filename) {
     module.exports = fs.readFileSync(filename, 'utf8');
 };
-// to do: 
 
-const movies = [
-  {
-    title: 'Crimes of Grindlwald',
-    year: 2018,
-    genre: 'Fantasy'
-  },
-  {
-    title: 'Mad Max',
-    year: 2016,
-    genre: 'Action'
-  },
-  {
-    title: 'Hereditary',
-    year: 2018,
-    genre: 'Horror'
-  },
-  {
-    title: 'Avatar',
-    year: 2008,
-    genre: 'Fantasy' 
-  },
-  {
-    title: 'Lord of the Rings',
-    year: 2004,
-    genre: 'fantasy'
-  }
-];
-
+const movies = require('./data/movies.json')
+console.log(movies[0]);
 const generateMovieHtml = movie => {
   return `<div class ='movie'>
     <h2>${movie.title}</h2>
-    <span class='genre'><strong>Genre:</strong> ${movie.genre}</span>
-    <span class='year'><strong>Year:</strong> ${movie.year}</span>
+    <span class='genre'><strong>Genre:</strong> ${movie.genres.join('/')}</span>
+    <a href='><img src='${movie.poster_url}'></a>
   </div>`
 }
 const generateMoviesHtml = movies =>{
