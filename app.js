@@ -43,7 +43,7 @@ const generateHtml = (body, title) => {
             <li><a href='/about'>About</a></li>
           </ul>
         </div>
-        ${body} 
+        ${body}
       </body>
     </html>`;
 }
