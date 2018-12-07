@@ -31,3 +31,7 @@ body {
 a, a:visited {
   color: blue;
 }
+
+img{
+  width: 200px;
+}
