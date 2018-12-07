@@ -1,12 +1,14 @@
 //refactor writehead
-
 const http = require('http');
-
 const fs = require('fs');
 
 require.extensions['.css'] = function (module, filename) {
-    module.exports = fs.readFileSync(filename, 'utf8');
+  module.exports = fs.readFileSync(filename, 'utf8');
 };
+
+const loadFile = path => {
+  return require(path);
+}
 
 const movies = require('./data/movies_with_ids.json');
 
@@ -18,16 +20,13 @@ const generateMovieSummaryHtml = movie => {
   </div>`
 }
 
-
-
-const generateMoviesHtml = movies =>{
+const generateMoviesListHtml = movies =>{
   let generatedMoviesHtml = '';
   for(let i = 0; i < movies.length; i++){
     generatedMoviesHtml += generateMovieSummaryHtml(movies[i]);
   };
   return generatedMoviesHtml;
 }
-
 
 const generateHtml = (body, title) => {
   return `  
@@ -48,44 +47,70 @@ const generateHtml = (body, title) => {
       </body>
     </html>`;
 }
-const loadFile = path => {
-  return require(path);
+
+const respond = (response, statusCode, responseBody) => {
+  response.writeHead(statusCode);
+  response.write(responseBody);
+  response.end();
 }
-let moviesHtml = generateMoviesHtml(movies);
+
+const respondWithHomepage = response => {
+  let moviesListHtml = generateMoviesListHtml(movies);
+  let body = `
+    <h1>Movie listings</h1>
+    <p>Here is our list of movies:</p>
+    ${moviesListHtml}
+  `;
+  let title = 'Movies Site';
+  let html = generateHtml(body, title);
+  respond(response, 200, html);
+}
+
+const respondWithAboutPage = response => {
+  let body = `<h1>Built by Wickett bro's</h1>`;
+  let title = 'About - Movies Site';
+  let html = generateHtml(body, title);
+  respond(response, 200, html);
+}
+
+const respondWithMoviePage = (request, response) => {
+  let movieId = request.url.split('/')[2];
+  let movie = movies.filter(movie => movieId == movie.id)[0];
+  let body = `
+    <h1>${movie.title}</h1>
+    <p class='synopsis'>${movie.synopsis}</p>
+    <img src='${movie.poster_url}'>
+  `;
+  let title = movie.title;
+  let text = generateHtml(body, title);
+  respond(response, 200, text);
+}
+
+const respondWithAppCss = response => {
+  let css = loadFile('./assets/app.css');
+  respond(response, 200, css);
+}
+
+const respondWith404Page = response => {
+  let body = `<h1>404: Page unknown</h1>`;
+  let title = '404 - Movies Site';
+  let html = generateHtml(body, title);
+  respond(response, 404, html);
+}
+
 const server = http.createServer((request, response) =>{
   console.log(request.url);
-  let text; 
-  if(request.url === '/'){
-    response.writeHead(200);
-    let homeBody = `<h1>Welcome to the home page!</h1> ${moviesHtml}`;
-    text = generateHtml(homeBody, 'Movies Site');
-  } else if(request.url === '/about'){
-    response.writeHead(200);
-    text = generateHtml(`<h1>Built by Wickett bro's</h1>`, 'About - Movies Site');
-  } else if(request.url === '/assets/app.css'){
-    response.writeHead(200);
-    text = loadFile('./assets/app.css');
-  } else if(!!request.url.match('/movies/')){
-    let splitUrl = request.url.split('/')
-    let movieId = splitUrl[2];
-    let filteredMovies = movies.filter(movie => {
-      if(movieId == movie.id){
-        return true;
-      }
-    })
-    let movie = filteredMovies[0];
-    let movieBody = `<img src='${movie.poster_url}'>`
-    text = generateHtml(movieBody, movie.title);
-    
-    
-  
-
-  } else{
-    response.writeHead(404);
-    text = generateHtml(`<h1>404: Page unknown</h1>`,'404 - Movies Site');
+  if (request.url === '/') {
+    respondWithHomepage(response);
+  } else if (request.url === '/about') {
+    respondWithAboutPage(response);
+  } else if (!!request.url.match('/movies/')) {
+    respondWithMoviePage(request, response);
+  } else if (request.url === '/assets/app.css') {
+    respondWithAppCss(response);
+  } else {
+    respondWith404Page(response);
   }
-  response.write(text);
-  response.end();
 })
 
 server.listen(3000, () =>{
