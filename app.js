@@ -1,36 +1,41 @@
+//refactor writehead
+
 const http = require('http');
+
 const fs = require('fs');
+
 require.extensions['.css'] = function (module, filename) {
     module.exports = fs.readFileSync(filename, 'utf8');
 };
 
-const movies = require('./data/movies.json')
-console.log(movies[0]);
-const generateMovieHtml = movie => {
+const movies = require('./data/movies_with_ids.json');
+
+const generateMovieSummaryHtml = movie => {
   return `<div class ='movie'>
     <h2>${movie.title}</h2>
     <span class='genre'><strong>Genre:</strong> ${movie.genres.join('/')}</span>
-    <a href='><img src='${movie.poster_url}'></a>
+    <a href='/movies/${movie.id}'><img src='${movie.poster_url}'></a>
   </div>`
 }
+
+
+
 const generateMoviesHtml = movies =>{
   let generatedMoviesHtml = '';
   for(let i = 0; i < movies.length; i++){
-    generatedMoviesHtml += generateMovieHtml(movies[i]);
+    generatedMoviesHtml += generateMovieSummaryHtml(movies[i]);
   };
   return generatedMoviesHtml;
 }
 
 
-// add movies
-//refactor writehead
 const generateHtml = (body, title) => {
-  return `
+  return `  
     <!DOCTYPE html>
     <html>
       <head>
         <title>${title}</title>
-        <link href="./assets/app.css" type="text/css" rel="stylesheet">
+        <link href="/assets/app.css" type="text/css" rel="stylesheet">
       </head>
       <body>
         <div class='nav'>
@@ -60,6 +65,21 @@ const server = http.createServer((request, response) =>{
   } else if(request.url === '/assets/app.css'){
     response.writeHead(200);
     text = loadFile('./assets/app.css');
+  } else if(!!request.url.match('/movies/')){
+    let splitUrl = request.url.split('/')
+    let movieId = splitUrl[2];
+    let filteredMovies = movies.filter(movie => {
+      if(movieId == movie.id){
+        return true;
+      }
+    })
+    let movie = filteredMovies[0];
+    let movieBody = `<img src='${movie.poster_url}'>`
+    text = generateHtml(movieBody, movie.title);
+    
+    
+  
+
   } else{
     response.writeHead(404);
     text = generateHtml(`<h1>404: Page unknown</h1>`,'404 - Movies Site');
