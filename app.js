@@ -76,11 +76,17 @@ const respondWithAboutPage = response => {
 const respondWithMoviePage = (request, response) => {
   let movieId = request.url.split('/')[2];
   let movie = movies.filter(movie => movieId == movie.id)[0];
+
+  let year = movie.release_date.split("-")[0];
+  let genres = movie.genres.join('/');
+
   let body = `
-    <h1>${movie.title}</h1>
+    <h1>${movie.title} (${year})</h1>
+    <h2 class='genre'>${genres}</h2>
     <p class='synopsis'>${movie.synopsis}</p>
     <img src='${movie.poster_url}'>
   `;
+  
   let title = movie.title;
   let text = generateHtml(body, title);
   respond(response, 200, text);
@@ -99,7 +105,8 @@ const respondWith404Page = response => {
 }
 
 const server = http.createServer((request, response) =>{
-  console.log(request.url);
+  console.log(`${request.method} "${request.url}"`);
+  console.log('');
   if (request.url === '/') {
     respondWithHomepage(response);
   } else if (request.url === '/about') {
