@@ -20,6 +20,16 @@ const movies = [
     title: 'Hereditary',
     year: 2018,
     genre: 'Horror'
+  },
+  {
+    title: 'Avatar',
+    year: 2008,
+    genre: 'Fantasy' 
+  },
+  {
+    title: 'Lord of the Rings',
+    year: 2004,
+    genre: 'fantasy'
   }
 ];
 
@@ -30,9 +40,14 @@ const generateMovieHtml = movie => {
     <span class='year'><strong>Year:</strong> ${movie.year}</span>
   </div>`
 }
+const generateMoviesHtml = movies =>{
+  let generatedMoviesHtml = '';
+  for(let i = 0; i < movies.length; i++){
+    generatedMoviesHtml += generateMovieHtml(movies[i]);
+  };
+  return generatedMoviesHtml;
+}
 
-let movie = movies[1];
-let movieHtml = generateMovieHtml(movie);
 
 // add movies
 //refactor writehead
@@ -58,13 +73,13 @@ const generateHtml = (body, title) => {
 const loadFile = path => {
   return require(path);
 }
-
+let moviesHtml = generateMoviesHtml(movies);
 const server = http.createServer((request, response) =>{
   console.log(request.url);
   let text; 
   if(request.url === '/'){
     response.writeHead(200);
-    let homeBody = `<h1>Welcome to the home page!</h1> ${movieHtml}`;
+    let homeBody = `<h1>Welcome to the home page!</h1> ${moviesHtml}`;
     text = generateHtml(homeBody, 'Movies Site');
   } else if(request.url === '/about'){
     response.writeHead(200);
