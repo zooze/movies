@@ -14,17 +14,19 @@ const movies = require('./data/movies_with_ids.json');
 
 const generateMovieSummaryHtml = movie => {
   return `<div class ='movie'>
+    <div class='image-frame'>
+      <a href='/movies/${movie.id}'><img src='${movie.poster_url}'></a>
+    </div>  
     <h2>${movie.title}</h2>
-    <span class='genre'><strong>Genre:</strong> ${movie.genres.join('/')}</span>
-    <a href='/movies/${movie.id}'><img src='${movie.poster_url}'></a>
   </div>`
 }
 
 const generateMoviesListHtml = movies =>{
-  let generatedMoviesHtml = '';
+  let generatedMoviesHtml = `<div class="movies">`;
   for(let i = 0; i < movies.length; i++){
     generatedMoviesHtml += generateMovieSummaryHtml(movies[i]);
   };
+  generatedMoviesHtml += `</div>`;
   return generatedMoviesHtml;
 }
 
@@ -57,7 +59,7 @@ const respond = (response, statusCode, responseBody) => {
 const respondWithHomepage = response => {
   let moviesListHtml = generateMoviesListHtml(movies);
   let body = `
-    <h1>Movie listings</h1>
+    <h1 class='listings'>Movie listings</h1>
     <p>Here is our list of movies:</p>
     ${moviesListHtml}
   `;

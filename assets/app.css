@@ -1,12 +1,19 @@
+* {
+  box-sizing: border-box;
+}
+
+
 body {
   font-family: Hevletica, Arial, sans-serif;
   color: #111144;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .nav ul {
   list-style: none;
   padding: 0;
-}
+} 
 
 .nav ul li {
   display: inline-block;
@@ -16,7 +23,11 @@ body {
 .movie {
   background-color: #dddddd;
   padding: 10px;
-  margin: 10px;
+  margin-right: 20px;
+  display:inline-block;
+  width: calc(25% - 20px * 3 / 4);
+  margin-bottom: 20px;
+  vertical-align: top;
 }
 
 .movie h2 {
@@ -28,10 +39,25 @@ body {
   display: block;
 }
 
+.movie:nth-of-type(4n+4){
+  margin-right: 0;
+}
+
 a, a:visited {
   color: blue;
 }
 
 img{
-  width: 200px;
+  width: 100%;
+}
+
+.listings{
+  text-align: center;
+}
+
+.image-frame{
+  height: 397px;
+  overflow: hidden;
+  background-color: black;
+  margin-bottom: 10px;
 }
