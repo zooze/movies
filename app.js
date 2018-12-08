@@ -1,6 +1,7 @@
 //refactor writehead
 const http = require('http');
 const fs = require('fs');
+const truncate = require('./utils/truncate');
 
 require.extensions['.css'] = function (module, filename) {
   module.exports = fs.readFileSync(filename, 'utf8');
