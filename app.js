@@ -63,7 +63,6 @@ const respondWithHomepage = response => {
   let moviesListHtml = generateMoviesListHtml(movies);
   let body = `
     <h1 class='listings'>Movie listings</h1>
-    <p>Here is our list of movies:</p>
     ${moviesListHtml}
   `;
   let title = 'Movies Site';

@@ -5,9 +5,10 @@
 
 body {
   font-family: Hevletica, Arial, sans-serif;
-  color: #111144;
+  color: white;
   max-width: 1200px;
   margin: 0 auto;
+  background-color: rgb(48, 45, 45);
 }
 
 .nav ul {
@@ -55,7 +56,7 @@ body {
 }
 
 a, a:visited {
-  color: blue;
+  color: white;
 }
 
 .movie img{
