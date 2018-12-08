@@ -14,11 +14,13 @@ const loadFile = path => {
 const movies = require('./data/movies_with_ids.json');
 
 const generateMovieSummaryHtml = movie => {
-  return `<div class ='movie'>
-    <div class='image-frame'>
-      <a href='/movies/${movie.id}'><img src='${movie.poster_url}'></a>
-    </div>  
-    <h2>${movie.title}</h2>
+  return `<div class='movie'>
+    <a class='movie-link' href='/movies/${movie.id}'>
+      <div class='image-frame'>
+        <img src='${movie.poster_url}'>
+        <h2>${movie.title}</h2>
+      </div>
+    </a>
   </div>`
 }
 
