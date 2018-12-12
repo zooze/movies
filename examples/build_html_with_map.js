@@ -32,6 +32,4 @@ const generateListHtml = arr => {
   return `<ul>${liElements}</ul>`;
 }
 
-
 console.log(generateListHtml(genres));
-
