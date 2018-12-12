@@ -5,9 +5,10 @@
 
 body {
   font-family: Hevletica, Arial, sans-serif;
-  color: #111144;
+  color: white;
   max-width: 1200px;
   margin: 0 auto;
+  background-color: rgb(48, 45, 45);
 }
 
 .nav ul {
@@ -31,23 +32,33 @@ body {
 }
 
 .movie h2 {
-  margin-top: 0;
-  margin-bottom: 6px;
+  position: absolute;
+  bottom: 0;
+  left: 17px;
+  right: 17px;
+  color: white;
+  display: none;
 }
 
+.movie-link:hover h2 {
+  display: block;
+}
 .movie .genre {
   display: block;
 }
 
+.movie-link:hover img {
+  filter: grayscale(65%) brightness(20%);
+}
 .movie:nth-of-type(4n+4){
   margin-right: 0;
 }
 
 a, a:visited {
-  color: blue;
+  color: white;
 }
 
-img{
+.movie img{
   width: 100%;
 }
 
@@ -56,8 +67,8 @@ img{
 }
 
 .image-frame{
+  position: relative;
   height: 397px;
   overflow: hidden;
   background-color: black;
-  margin-bottom: 10px;
 }
