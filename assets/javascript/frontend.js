@@ -9,16 +9,41 @@ const generateMovieSummaryHtml = movie => {
   </div>`
 }
 
-var endpoint = "/api/movies";
-var onSuccess = function(response) {
-  var movies = JSON.parse(response);
-  let moviesHtml = "";
-  movies.forEach(function(movie) {
-    moviesHtml += generateMovieSummaryHtml(movie);
-  });
-  $('.movies').html(moviesHtml);
+const getMovies = genre => {
+  let endpoint = "/api/movies";
+  if (genre) endpoint += `?genre=${genre}`; 
+
+  $.get(endpoint, response => {
+    let movies = JSON.parse(response);
+    let moviesHtml = "";
+    movies.forEach(movie => {
+      moviesHtml += generateMovieSummaryHtml(movie);
+    });
+    $('.movies').html(moviesHtml);
+  })
 };
 
-setTimeout(() => {
-  $.get(endpoint, onSuccess)
-}, 500);
+const onSuccessGenre = response => {
+  let genres = JSON.parse(response);
+
+  genres.forEach(genre => {
+    let button = $(`<button class='genre-button'>${genre}</button>`);
+
+    button.on("click", function() {
+      $('.genre-button').removeClass('active');
+      $(this).addClass("active");
+      getMovies(genre.toLowerCase());
+    });
+
+    $('.buttons').append(button);
+
+  });
+}
+
+const getGenres = () => {
+  let endpoint = "/api/genres";
+  $.get(endpoint, onSuccessGenre);
+}
+
+getMovies();
+getGenres();

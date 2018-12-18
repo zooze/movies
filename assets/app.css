@@ -72,3 +72,15 @@ a, a:visited {
   overflow: hidden;
   background-color: black;
 }
+
+.genre-button {
+  background-color: #3939e9;
+  color: #fff;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.genre-button.active {
+  background-color: #ffffff;
+  color: #000000;
+}

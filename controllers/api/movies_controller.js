@@ -12,8 +12,26 @@ class ApiMoviesController {
 
   // GET /api/movies
   index(id, params, request, response) {
-    let json = JSON.stringify(this.movies)
-    this.respond(response, 200, json)
+
+    let genre = params.genre;
+    let json;
+
+    if (genre) {
+      // Filter movies for matching genre
+      json = this.movies.filter(movie => {
+
+        // Create new array of lowercase genres for comparison
+        let _genres = movie.genres.map(genre => genre.toLowerCase());
+
+        // Return true or false for whether genre matches.
+        return (_genres.includes(genre));
+      });
+    } else {
+      json = this.movies;
+    }
+
+    let stringifiedJson = JSON.stringify(json);
+    this.respond(response, 200, stringifiedJson);
   }
 
   // GET /api/movies/:id

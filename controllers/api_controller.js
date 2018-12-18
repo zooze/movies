@@ -1,7 +1,7 @@
 const Url = require('url');
 
 import ApiMoviesController from "./api/movies_controller.js";
-
+import ApiGenresController from "./api/genres_controller.js";
 
 class ApiController {
 
@@ -29,11 +29,9 @@ class ApiController {
     if (method == "PUT" && id)    action = "update";
     if (method == "DELETE" && id) action = "destroy";
 
-    if (resource === "movies") {
-      ApiMoviesController[action](id, params, request, response);
-    } else {
-      this.respond(response, 404, "Resource not found");
-    }
+    if (resource === "movies") ApiMoviesController[action](id, params, request, response);
+    else if (resource === "genres") ApiGenresController[action](id, params, request, response);
+    else this.respond(response, 404, "Resource not found");
   }
 
 };
