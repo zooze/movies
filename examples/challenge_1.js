@@ -1,25 +1,37 @@
 // Create a function (or set of functions that outputs the HTML below when given a list of directors and movies.)
-
+ 
 
 let desiredHtml = `
   <div class='directors'>
-    <div class='director'>
-      <h2>Jeff Nichols</h2>
-      <p>Movies by Jeff Nichols:</p>
+    <div class='director' ng-repeat='director in directors'>
+      <h2>{{director.name}}</h2>
+      <p>Movies by {{director.name}}:</p>
       <ul class='movies'>
-        <li>Shotgun stories</li>
-        <li>Mud</li>
-        <li>Take Shelter</li>
-        <li>Midnight special</li>
+        <li ng-repeat='movie in director.movies'>{{movie}}</li>
       </ul>
     </div>
-    <div class='director'>
-      <h2>Christopher Nolan</h2>
-      <!-- and so on... repeat for all directors -->
   </div>
 `;
 
-// Write your function(s) here!
+const generateMoviesListHtml = movies => {
+  let liElements = movies.map(movie => `<li>${movie}</li>`).join('');
+  return `<ul class='movies'>${liElements}</ul>`;
+}
+
+const generateDirectorHtml = director => {
+  let moviesHtml = generateMoviesListHtml(director.movies);
+  return `
+    <div class='director'>
+      <h2>${director.name}</h2>
+      <p>Movies by ${director.name}:</p>
+      ${moviesHtml}
+    </div>`;
+}
+
+const generateDirectorsHtml = directors => {
+  let directorsList = directors.map(generateDirectorHtml).join('');
+  return `<div class='directors'>${directorsList}</div>`;
+};
 
 let directors = require("../data/directors_with_movies.json");
 let html = generateDirectorsHtml(directors);
