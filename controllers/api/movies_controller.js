@@ -36,7 +36,10 @@ class ApiMoviesController {
 
   // GET /api/movies/:id
   show(id, params, request, response) {
-    // ADD CODE HERE to filter for an individual movie!
+    let newArray = this.movies.filter(movie =>{
+      return (movie.id == id) 
+    })
+    let json = JSON.stringify(newArray[0]);
     this.respond(response, 200, json)
   }
 
